@@ -144,7 +144,47 @@ namespace DevTeams.UI
 
         private void CreateTeam()
         {
-            throw new NotImplementedException();
+            Console.Clear();
+            Console.WriteLine("Create Team View\n");
+            Console.Write("Please Enter a Team Name: ");
+           
+            DevTeam devTeam = new DevTeam();
+
+
+            
+            devTeam.TeamName = Console.ReadLine();
+
+            Console.WriteLine("Add team members by entering the ID below, or create team without any members\n");
+            bool isRunning = true;
+            while (isRunning)
+            {
+                Console.WriteLine("Add Team Member: (y/n)?\n");
+
+                string userChoice = Console.ReadLine().ToLower(); ;
+                switch (userChoice)
+                {
+                    case "y":
+                        Console.Write("Developer ID? ");
+                        int devId = Convert.ToInt32(Console.ReadLine());
+                        var devToAdd   = _devRepo.GetDeveloperByID(devId);
+                        devTeam.Members.Add(devToAdd);
+                        break;
+                    case "n":
+                        Console.WriteLine("That's ok. You may add more later.");
+                        isRunning = false;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid Selection.");
+                        WaitForKey();
+                        break;
+
+
+                }
+                WaitForKey();
+
+            }
+
+            _devTeamRepo.CreateNewTeam(devTeam);
         }
 
         private void DeleteAnExistingDeveloper()
